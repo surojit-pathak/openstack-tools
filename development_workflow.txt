@@ -1,0 +1,16 @@
+
+DevStack based development -
+- /opt/stack/<proj> - is the working directory
+  - master is the stable working branch
+  - topicbranch is the WIP branch
+- /home/<proj> - is the checkin directory
+  - master is the downloaded branch, not of much significance
+  - dev-base is the branch at per by commit with /opt/stack/<proj>-(master)
+  - topicbranch is the point of check-in
+
+Workflow
+- Develop at /opt/stack/<proj>(topicbranch), test, generate a patch
+- Apply the patch at /home/<proj>(topicbranch), using suro_devs_git_reapply()
+- Run 'tox -epy27', run 'tox -epep8'
+- Try the modified patch at /opt/stack/<proj>(topicbranch), if required
+- Initiate review from /home/<proj>(topicbranch)
