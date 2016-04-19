@@ -24,3 +24,27 @@ function suro_novawrap_list_vm_with_hv ()
         printf "Host:%-32s, HV: %-32s, Tenant-Id: %s, Name: %s\n" $hostname $hv $tenantid $name
     done
 }
+
+function nova_poll_ssh_rdy ()
+{
+    echo $1;
+    while [ 1 -eq 1 ]; do
+        nova console-log $1 | grep " sshd:";
+        if [ $? -eq 0 ]; then
+            return;
+        fi;
+        sleep 2;
+        echo "Another attempt\n";
+    done
+}
+
+function nova_suro_hv_check_instance ()
+{
+    for i in `find . -name console.log`;
+    do
+        dir=`dirname $i`;
+        inst=`grep "nova:name" $dir/libvirt.xml | cut -f2 -d\> | cut -f1 -d\<`;
+        echo $inst "-----";
+        grep "init-local" $i;
+    done
+}
